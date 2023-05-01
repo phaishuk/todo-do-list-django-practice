@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+    <div class="d-flex align-items-center">
+      <h1>TODO list</h1>
+      <div class="ml-auto">
+        <a href="{% url 'to_do_list:task-create' %}" class="btn btn-primary link-to-page">
+          Create
+        </a>
+      </div>
+    </div>
+  {% if task_list %}
+    {% for task in task_list %}
+      <table class="table">
+      {% if task.is_done %}
+        <strong style="color: green">Done</strong>
+      {% else %}
+        <strong style="color: red">Not done</strong>
+      {% endif %}
+
+      {{ task.content }} <br>
+      Created at: {{ task.datetime }} <br>
+      Is done: {{ task.is_done }} <br>
+      Deadline: {{ task.deadline }} <br>
+      Tags:
+      {% for tag in task.tags.all %}
+        {{ tag }},
+      {% endfor %}
+
+      <a href="{% url 'to_do_list:task-update' pk=task.id %}">
+        Update
+      </a>
+      <a href="{% url 'to_do_list:task-delete' pk=task.id %}" style="color: red">
+        Delete
+      </a>
+
+      <div class="d-flex align-items-center">
+        <div class="ml-auto">
+          {% if task.is_done %}
+            <a href="{% url 'to_do_list:task-change-is-done' pk=task.id %}"
+               class="btn btn-secondary link-to-page">
+              Undo
+            </a>
+          {% else %}
+            <a href="{% url 'to_do_list:task-change-is-done' pk=task.id %}"
+               class="btn btn-primary link-to-page">
+              Mark complete
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      <hr>
+
+    {% endfor %}
+  {% else %}
+    <p>There are no tasks</p>
+  {% endif %}
+{% endblock %}
