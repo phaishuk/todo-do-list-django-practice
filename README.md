@@ -9,7 +9,7 @@ This is a Django practice project. Here performed the simplest CRUD operations. 
 
 ```angular2html
 git clone https://github.com/phaishuk/todo-do-list-django-practice
-todo-do-list-django-practice
+cd todo-do-list-django-practice
 ```
 
 > 👉 .env file
