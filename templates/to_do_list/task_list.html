@@ -38,15 +38,19 @@
       <div class="d-flex align-items-center">
         <div class="ml-auto">
           {% if task.is_done %}
-            <a href="{% url 'to_do_list:task-change-is-done' pk=task.id %}"
-               class="btn btn-secondary link-to-page">
-              Undo
-            </a>
+            <form method="POST" action="{% url 'to_do_list:task-change-is-done' pk=task.id %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-secondary link-to-page">
+                Undo
+              </button>
+            </form>
           {% else %}
-            <a href="{% url 'to_do_list:task-change-is-done' pk=task.id %}"
-               class="btn btn-primary link-to-page">
-              Mark complete
-            </a>
+            <form method="POST" action="{% url 'to_do_list:task-change-is-done' pk=task.id %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary link-to-page">
+                Mark complete
+              </button>
+            </form>
           {% endif %}
         </div>
       </div>

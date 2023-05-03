@@ -1,23 +1,23 @@
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 
 from to_do_list.models import Task, Tag
 
 
-class TaskListView(generic.ListView):
-    model = Task
-
-
 class TaskChangeStatusView(generic.View):
 
     @staticmethod
-    def get(request, pk):
+    def post(request, pk):
         task = get_object_or_404(Task, id=pk)
         task.is_done = not task.is_done
         task.save()
 
-        return redirect(request.META.get("HTTP_REFERER"))
+        return redirect(reverse("to_do_list:task-list"))
+
+
+class TaskListView(generic.ListView):
+    model = Task
 
 
 class TaskCreateView(generic.CreateView):
@@ -42,12 +42,15 @@ class TagListView(generic.ListView):
 
 class TagCreateView(generic.CreateView):
     model = Tag
+    fields = "__all__"
+    success_url = reverse_lazy("to_do_list:tag-list")
 
 
 class TagUpdateView(generic.UpdateView):
     model = Tag
+    fields = "__all__"
+    success_url = reverse_lazy("to_do_list:tag-list")
 
 
 class TagDeleteView(generic.DeleteView):
     model = Task
-
